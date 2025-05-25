@@ -1,0 +1,17 @@
+{
+  "home": {
+    "title": "Home Screen",
+    "welcome": "Welcome to our application"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success"
+  }
+}
