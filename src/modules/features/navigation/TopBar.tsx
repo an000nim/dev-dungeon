@@ -1,163 +1,115 @@
-import type { User } from '@features/user/types';
-import { useLanguage } from '@shared/i18n';
+import { selectUser } from '@shared/auth/authSlice';
+import { keycloak } from '@shared/auth/config/keycloak';
+import { useLanguage } from '@shared/i18n/hooks/useLanguage';
 import { useAppSelector } from '@shared/reduxTools/reduxHooks';
-
-import { useCallback, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
+import { Menu as MenuIcon } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
-import {
-  AppBar,
-  Avatar,
-  Box,
-  IconButton,
-  Menu,
-  MenuItem,
-  Toolbar,
-  Tooltip,
-  Typography,
-  useTheme,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { AppBar, Avatar, Box, IconButton, Toolbar, Tooltip, styled } from '@mui/material';
 
-const TopBar = () => {
+export const TopBar = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const user = useAppSelector((state) => state.auth.user) as User | null;
-  const theme = useTheme();
+  const user = useAppSelector(selectUser);
   const { currentLanguage, changeLanguage } = useLanguage();
 
-  const handleNavigate = useCallback(
-    (path: string) => {
-      navigate(path);
-    },
-    [navigate]
-  );
-
-  const handleOpenUserMenu = useCallback((event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  }, []);
-
-  const handleCloseUserMenu = useCallback(() => {
-    setAnchorElUser(null);
-  }, []);
-
   return (
-    <AppBar
-      position="static"
-      elevation={0}
-      sx={{
-        background: theme.palette.background.paper,
-        color: theme.palette.text.primary,
-        boxShadow: 1,
-        borderBottom: `1px solid ${theme.palette.divider}`,
-      }}
-    >
+    <StyledAppBar position="static" elevation={0}>
       <Toolbar>
-        <GrowBox />
-        <LangBox>
-          <LangBtn
-            as="button"
-            active={currentLanguage === 'ru'}
-            onClick={() => changeLanguage('ru')}
-          >
+        <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+          <MenuIcon />
+        </IconButton>
+        <Spacer />
+        <LanguageSwitcher>
+          <LanguageButton isActive={currentLanguage === 'ru'} onClick={() => changeLanguage('ru')}>
             RU
-          </LangBtn>
-          <LangBtn
-            as="button"
-            active={currentLanguage === 'en'}
-            onClick={() => changeLanguage('en')}
-          >
+          </LanguageButton>
+          <LanguageButton isActive={currentLanguage === 'en'} onClick={() => changeLanguage('en')}>
             EN
-          </LangBtn>
-        </LangBox>
-        <IconBox>
-          <IconButton color="inherit" onClick={() => handleNavigate('/settings')}>
+          </LanguageButton>
+        </LanguageSwitcher>
+        <SettingsContainer>
+          <IconButton color="inherit" onClick={() => navigate('/settings')}>
             <SettingsIcon />
           </IconButton>
-        </IconBox>
-        <UserBox>
+        </SettingsContainer>
+        <UserContainer>
           {user ? (
-            <>
-              <Tooltip title={user.username}>
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt={user.username} src={user.avatar || ''} />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: '45px' }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                <MenuItem onClick={() => handleNavigate('/profile')}>
-                  <Typography textAlign="center">{t('nav.profile')}</Typography>
-                </MenuItem>
-                <MenuItem onClick={() => handleNavigate('/settings')}>
-                  <Typography textAlign="center">{t('nav.settings')}</Typography>
-                </MenuItem>
-              </Menu>
-            </>
+            <Tooltip title={user.username}>
+              <UserAvatar>
+                <Avatar alt={user.username} src={user.avatar || ''} />
+              </UserAvatar>
+            </Tooltip>
           ) : (
-            <IconButton
-              color="inherit"
-              onClick={() => handleNavigate('/login')}
-              sx={{ minWidth: 64 }}
-            >
+            <LoginButton color="inherit" onClick={() => keycloak.login()}>
               {t('nav.login')}
-            </IconButton>
+            </LoginButton>
           )}
-        </UserBox>
+        </UserContainer>
       </Toolbar>
-    </AppBar>
+    </StyledAppBar>
   );
 };
 
-const GrowBox = styled(Box)({ flexGrow: 1 });
-const LangBox = styled(Box)(({ theme }) => ({
+// Styles
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+  background: theme.palette.background.paper,
+  color: theme.palette.text.primary,
+  boxShadow: theme.shadows[1],
+  borderBottom: `1px solid ${theme.palette.divider}`,
+}));
+
+const Spacer = styled(Box)({
+  flexGrow: 1,
+});
+
+const LanguageSwitcher = styled(Box)(({ theme }) => ({
   width: 88,
   display: 'flex',
-  borderRadius: 8,
+  borderRadius: 16,
   overflow: 'hidden',
   border: `1px solid ${theme.palette.divider}`,
 }));
-const LangBtn = styled(Box)<{ active: boolean }>(({ theme, active }) => ({
+
+const LanguageButton = styled('button', {
+  shouldForwardProp: (prop) => prop !== 'isActive',
+})<{ isActive: boolean }>(({ theme, isActive }) => ({
   width: 44,
   textAlign: 'center',
   fontWeight: 700,
   fontSize: 14,
-  color: active ? theme.palette.primary.main : theme.palette.text.primary,
-  backgroundColor: active ? theme.palette.action.selected : 'transparent',
+  color: isActive ? theme.palette.primary.main : theme.palette.text.primary,
+  backgroundColor: isActive ? theme.palette.action.selected : 'transparent',
   border: 'none',
   outline: 'none',
   cursor: 'pointer',
   transition: 'all 0.2s',
-  '&:hover': { backgroundColor: theme.palette.action.hover },
+  '&:hover': {
+    backgroundColor: theme.palette.action.hover,
+  },
 }));
-const IconBox = styled(Box)({
+
+const SettingsContainer = styled(Box)({
   width: 48,
   display: 'flex',
   justifyContent: 'center',
   marginLeft: 24,
 });
-const UserBox = styled(Box)({
+
+const UserContainer = styled(Box)({
   width: 64,
   display: 'flex',
   justifyContent: 'center',
   marginLeft: 24,
 });
 
-export default TopBar;
+const UserAvatar = styled(IconButton)({
+  padding: 0,
+});
+
+const LoginButton = styled(IconButton)({
+  minWidth: 64,
+});

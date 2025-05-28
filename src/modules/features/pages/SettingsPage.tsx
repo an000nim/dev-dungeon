@@ -1,39 +1,29 @@
-import { useThemeMode } from '@shared/theme/ThemeProvider';
+import { useAppDispatch } from '@shared/reduxTools/reduxHooks';
+import { toggleTheme } from '@shared/theme/themeSlice';
 
-import { useTranslation } from 'react-i18next';
+import { Box, Card, CardContent, Typography, styled } from '@mui/material';
 
-import { FormControlLabel, Paper as MuiPaper, Switch, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-
-const SettingsPage = () => {
-  const { isDarkMode, toggleTheme } = useThemeMode();
-  const { t } = useTranslation();
+export const SettingsPage = () => {
+  const dispatch = useAppDispatch();
 
   return (
-    <PaddedBox>
-      <StyledPaper sx={{ p: 3, maxWidth: 400, mx: 'auto' }}>
-        <Typography variant="h4" gutterBottom>
-          {t('settings.title')}
-        </Typography>
-        <MarginTopBox>
-          <FormControlLabel
-            control={<Switch checked={isDarkMode} onChange={toggleTheme} />}
-            label={isDarkMode ? t('settings.theme.dark') : t('settings.theme.light')}
-          />
-        </MarginTopBox>
-      </StyledPaper>
-    </PaddedBox>
+    <RootBox>
+      <Card>
+        <CardContent>
+          <Typography variant="h5" gutterBottom>
+            Settings
+          </Typography>
+          <Box>
+            <Typography variant="body1">Theme</Typography>
+            <button onClick={() => dispatch(toggleTheme())}>Toggle Theme</button>
+          </Box>
+        </CardContent>
+      </Card>
+    </RootBox>
   );
 };
 
-const PaddedBox = styled('div')(({ theme }) => ({
-  padding: theme.spacing(3),
-}));
-
-const MarginTopBox = styled('div')(() => ({
-  marginTop: 16,
-}));
-
-const StyledPaper = styled(MuiPaper)({});
-
-export default SettingsPage;
+// Styles
+const RootBox = styled(Box)({
+  padding: 24,
+});

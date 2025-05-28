@@ -1,31 +1,30 @@
 import { Outlet } from 'react-router-dom';
 
-import { Box } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Box, styled } from '@mui/material';
 
-import Sidebar from './Sidebar';
-import TopBar from './TopBar';
+import { Sidebar } from './Sidebar';
+import { TopBar } from './TopBar';
 
-const AppLayout = () => {
+export const AppLayout = () => {
   return (
-    <FlexBox>
+    <RootBox>
       <Sidebar />
-      <ContentBox>
+      <MainContainer>
         <TopBar />
-        <MainBox component="main">
+        <ContentBox component="main">
           <Outlet />
-        </MainBox>
-      </ContentBox>
-    </FlexBox>
+        </ContentBox>
+      </MainContainer>
+    </RootBox>
   );
 };
 
-const FlexBox = styled(Box)({
+// Styles
+const RootBox = styled(Box)({
   display: 'flex',
-  height: '100vh',
 });
 
-const ContentBox = styled(Box)(({ theme }) => ({
+const MainContainer = styled(Box)(({ theme }) => ({
   flex: 1,
   display: 'flex',
   flexDirection: 'column',
@@ -33,9 +32,7 @@ const ContentBox = styled(Box)(({ theme }) => ({
   minHeight: '100vh',
 }));
 
-const MainBox = styled(Box)({
+const ContentBox = styled(Box)({
   flexGrow: 1,
   padding: 24,
 });
-
-export default AppLayout;

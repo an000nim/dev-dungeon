@@ -1,7 +1,8 @@
-import type { User } from '@features/user/types';
-import { useAppSelector } from '@shared/reduxTools/reduxHooks';
+import { useAppSelector } from '@app/hooks';
+import { selectUser } from '@app/store/slices/authSlice';
+import { LanguageSwitcher } from '@shared/i18n/components/LanguageSwitcher';
 
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -27,14 +28,10 @@ import {
   Toolbar,
   Tooltip,
   Typography,
+  styled,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
-
-const DrawerBox = styled(Box)({ textAlign: 'center' });
-const NavButtonsBox = styled(Box)({ flexGrow: 1, display: 'flex', gap: 8 });
-const UserBox = styled(Box)({ display: 'flex', alignItems: 'center', gap: 8 });
 
 const pages = [
   { path: '/', titleKey: 'nav.home', icon: HomeIcon },
@@ -49,20 +46,8 @@ export const Navigation = () => {
   const location = useLocation();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const user = useAppSelector((state) => state.auth.user) as User | null;
+  const user = useAppSelector(selectUser);
   const { t } = useTranslation();
-
-  const handleDrawerToggle = useCallback(() => {
-    setMobileOpen((prevState) => !prevState);
-  }, []);
-
-  const handleNavigation = useCallback(
-    (path: string) => {
-      navigate(path);
-      setMobileOpen(false);
-    },
-    [navigate]
-  );
 
   const handleOpenUserMenu = useCallback((event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -72,109 +57,80 @@ export const Navigation = () => {
     setAnchorElUser(null);
   }, []);
 
+  const handleDrawerToggle = useCallback(() => {
+    setMobileOpen(!mobileOpen);
+  }, [mobileOpen]);
+
+  const handleNavigation = useCallback(
+    (path: string) => {
+      navigate(path);
+      if (isMobile) {
+        setMobileOpen(false);
+      }
+    },
+    [navigate, isMobile]
+  );
+
   const drawer = (
-    <DrawerBox onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+    <DrawerContent onClick={handleDrawerToggle}>
       <List>
         {pages.map((page) => (
-          <ListItemButton
+          <NavListItemButton
             key={page.path}
             onClick={() => handleNavigation(page.path)}
             selected={location.pathname === page.path}
-            sx={{
-              '&.Mui-selected': {
-                backgroundColor: theme.palette.action.selected,
-              },
-              '&:hover': {
-                backgroundColor: theme.palette.action.hover,
-              },
-            }}
           >
-            <ListItemIcon sx={{ color: 'inherit' }}>
+            <ListItemIcon>
               <page.icon />
             </ListItemIcon>
             <ListItemText primary={t(page.titleKey)} />
-          </ListItemButton>
+          </NavListItemButton>
         ))}
       </List>
-    </DrawerBox>
+    </DrawerContent>
   );
 
   return (
     <>
-      <AppBar
-        position="static"
-        sx={{
-          backgroundColor: theme.palette.background.paper,
-          color: theme.palette.text.primary,
-          boxShadow: 1,
-          borderBottom: `1px solid ${theme.palette.divider}`,
-        }}
-      >
+      <StyledAppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             {isMobile && (
-              <IconButton
+              <MenuButton
                 color="inherit"
                 aria-label="open drawer"
                 edge="start"
                 onClick={handleDrawerToggle}
-                sx={{ mr: 2 }}
               >
                 <MenuIcon />
-              </IconButton>
+              </MenuButton>
             )}
 
             {!isMobile && (
-              <NavButtonsBox>
+              <NavButtonsContainer>
                 {pages.map((page) => (
-                  <Button
+                  <NavButton
                     key={page.path}
                     onClick={() => handleNavigation(page.path)}
-                    sx={{
-                      color: 'inherit',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 1,
-                      backgroundColor:
-                        location.pathname === page.path
-                          ? theme.palette.action.selected
-                          : 'transparent',
-                      '&:hover': {
-                        backgroundColor: theme.palette.action.hover,
-                      },
-                    }}
+                    selected={location.pathname === page.path}
                   >
                     <page.icon />
                     {t(page.titleKey)}
-                  </Button>
+                  </NavButton>
                 ))}
-              </NavButtonsBox>
+              </NavButtonsContainer>
             )}
 
-            <UserBox>
+            <RightSection>
+              <LanguageSwitcher />
               {user ? (
                 <>
                   <Tooltip title={t('nav.logout')}>
-                    <IconButton
-                      onClick={handleOpenUserMenu}
-                      sx={{
-                        p: 0,
-                        '&:hover': {
-                          backgroundColor: theme.palette.action.hover,
-                        },
-                      }}
-                    >
+                    <UserAvatarButton onClick={handleOpenUserMenu}>
                       <Avatar alt={user.username} src={user.avatar} />
-                    </IconButton>
+                    </UserAvatarButton>
                   </Tooltip>
-                  <Menu
-                    sx={{
-                      mt: '45px',
-                      '& .MuiPaper-root': {
-                        backgroundColor: theme.palette.background.paper,
-                        color: theme.palette.text.primary,
-                      },
-                    }}
+                  <UserMenu
                     id="menu-appbar"
                     anchorEl={anchorElUser}
                     anchorOrigin={{
@@ -189,56 +145,118 @@ export const Navigation = () => {
                     open={Boolean(anchorElUser)}
                     onClose={handleCloseUserMenu}
                   >
-                    <MenuItem
-                      onClick={handleCloseUserMenu}
-                      sx={{
-                        '&:hover': {
-                          backgroundColor: theme.palette.action.hover,
-                        },
-                      }}
-                    >
+                    <MenuItem onClick={handleCloseUserMenu}>
                       <Typography textAlign="center">{t('nav.logout')}</Typography>
                     </MenuItem>
-                  </Menu>
+                  </UserMenu>
                 </>
               ) : (
-                <Button
-                  color="inherit"
-                  onClick={() => handleNavigation('/login')}
-                  sx={{
-                    '&:hover': {
-                      backgroundColor: theme.palette.action.hover,
-                    },
-                  }}
-                >
+                <LoginButton onClick={() => handleNavigation('/login')}>
                   {t('nav.login')}
-                </Button>
+                </LoginButton>
               )}
-            </UserBox>
+            </RightSection>
           </Toolbar>
         </Container>
-      </AppBar>
-      <Drawer
+      </StyledAppBar>
+      <MobileDrawer
         variant="temporary"
         open={mobileOpen}
         onClose={handleDrawerToggle}
         ModalProps={{
           keepMounted: true,
         }}
-        sx={{
-          display: { xs: 'block', md: 'none' },
-          '& .MuiDrawer-paper': {
-            boxSizing: 'border-box',
-            width: 240,
-            backgroundColor: theme.palette.background.paper,
-            color: theme.palette.text.primary,
-          },
-        }}
       >
         {drawer}
-      </Drawer>
+      </MobileDrawer>
     </>
   );
 };
+
+// Styles
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+  backgroundColor: theme.palette.background.paper,
+  color: theme.palette.text.primary,
+  boxShadow: theme.shadows[1],
+  borderBottom: `1px solid ${theme.palette.divider}`,
+}));
+
+const MenuButton = styled(IconButton)({
+  marginRight: 16,
+});
+
+const NavButtonsContainer = styled(Box)({
+  flexGrow: 1,
+  display: 'flex',
+  gap: 16,
+});
+
+const NavButton = styled(Button, {
+  shouldForwardProp: (prop) => prop !== 'selected',
+})<{ selected?: boolean }>(({ theme, selected }) => ({
+  color: 'inherit',
+  display: 'flex',
+  alignItems: 'center',
+  gap: 8,
+  backgroundColor: selected ? theme.palette.action.selected : 'transparent',
+  '&:hover': {
+    backgroundColor: theme.palette.action.hover,
+  },
+}));
+
+const RightSection = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  gap: 16,
+});
+
+const UserAvatarButton = styled(IconButton)(({ theme }) => ({
+  padding: 0,
+  '&:hover': {
+    backgroundColor: theme.palette.action.hover,
+  },
+}));
+
+const UserMenu = styled(Menu)(({ theme }) => ({
+  marginTop: '45px',
+  '& .MuiPaper-root': {
+    backgroundColor: theme.palette.background.paper,
+    color: theme.palette.text.primary,
+  },
+}));
+
+const LoginButton = styled(Button)(({ theme }) => ({
+  color: 'inherit',
+  '&:hover': {
+    backgroundColor: theme.palette.action.hover,
+  },
+}));
+
+const MobileDrawer = styled(Drawer)(({ theme }) => ({
+  '& .MuiDrawer-paper': {
+    boxSizing: 'border-box',
+    width: 240,
+    backgroundColor: theme.palette.background.paper,
+    color: theme.palette.text.primary,
+  },
+}));
+
+const DrawerContent = styled(Box)({
+  textAlign: 'center',
+});
+
+const NavListItemButton = styled(ListItemButton, {
+  shouldForwardProp: (prop) => prop !== 'selected',
+})<{ selected?: boolean }>(({ theme, selected }) => ({
+  '&.Mui-selected': {
+    backgroundColor: theme.palette.action.selected,
+  },
+  '&:hover': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  '& .MuiListItemIcon-root': {
+    color: 'inherit',
+  },
+}));
 
 export default Navigation;
