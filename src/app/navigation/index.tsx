@@ -1,22 +1,21 @@
-import React from 'react';
+import HomePage from '@features/pages/HomePage';
+import LoginPage from '@features/pages/LoginPage';
+import ProfilePage from '@features/pages/ProfilePage';
+import SettingsPage from '@features/pages/SettingsPage';
+import AppLayout from '@shared/navigation/AppLayout';
 
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { HomeScreen } from '../../modules/features/pages/view/HomeScreen';
-import { LoginPage } from '../../modules/features/pages/view/LoginPage';
-import { ProfilePage } from '../../modules/features/pages/view/ProfilePage';
-import { SettingsPage } from '../../modules/features/pages/view/SettingsPage';
-import { AppLayout } from '../../modules/shared/navigation/components/AppLayout';
+const AppRoutes = () => (
+  <Routes>
+    <Route path="/" element={<AppLayout />}>
+      <Route index element={<HomePage />} />
+      <Route path="login" element={<LoginPage />} />
+      <Route path="profile" element={<ProfilePage />} />
+      <Route path="settings" element={<SettingsPage />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Route>
+  </Routes>
+);
 
-export const AppRoutes = () => {
-  return (
-    <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/" element={<AppLayout />}>
-        <Route index element={<HomeScreen />} />
-        <Route path="profile" element={<ProfilePage />} />
-        <Route path="settings" element={<SettingsPage />} />
-      </Route>
-    </Routes>
-  );
-};
+export default AppRoutes;

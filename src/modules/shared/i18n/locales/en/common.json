@@ -1,17 +1,42 @@
 {
+  "nav": {
+    "home": "Home",
+    "profile": "Profile",
+    "onboarding": "Onboarding",
+    "teams": "Teams",
+    "skills": "Skills",
+    "quests": "Quests",
+    "store": "Store",
+    "login": "Login"
+  },
+  "settings": {
+    "title": "Settings",
+    "theme": {
+      "dark": "Dark Theme",
+      "light": "Light Theme"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign In"
+    }
+  },
   "home": {
     "title": "Home Screen",
     "welcome": "Welcome to our application"
-  },
-  "auth": {
-    "login": "Login",
-    "logout": "Logout",
-    "email": "Email",
-    "password": "Password"
   },
   "common": {
     "loading": "Loading...",
     "error": "An error occurred",
     "success": "Success"
+  },
+  "profile": {
+    "title": "Profile",
+    "username": "Username",
+    "email": "Email",
+    "noUser": "Please log in to view your profile."
   }
 }

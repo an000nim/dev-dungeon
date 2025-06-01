@@ -1,4 +1,4 @@
-import { PaletteOptions } from '@mui/material';
+import { PaletteOptions, ThemeOptions } from '@mui/material';
 
 const lightPalette: PaletteOptions = {
   mode: 'light',
@@ -64,3 +64,7 @@ export const palette = {
   light: lightPalette,
   dark: darkPalette,
 };
+
+export const createTheme = (isDarkMode: boolean): ThemeOptions => ({
+  palette: isDarkMode ? darkPalette : lightPalette,
+});
