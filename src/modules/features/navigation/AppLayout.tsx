@@ -6,6 +6,20 @@ import { styled } from '@mui/material/styles';
 import Sidebar from './Sidebar';
 import TopBar from './TopBar';
 
+const AppLayout = () => {
+  return (
+    <FlexBox>
+      <Sidebar />
+      <ContentBox>
+        <TopBar />
+        <MainBox component="main">
+          <Outlet />
+        </MainBox>
+      </ContentBox>
+    </FlexBox>
+  );
+};
+
 const FlexBox = styled(Box)({
   display: 'flex',
   height: '100vh',
@@ -23,19 +37,5 @@ const MainBox = styled(Box)({
   flexGrow: 1,
   padding: 24,
 });
-
-const AppLayout = () => {
-  return (
-    <FlexBox>
-      <Sidebar />
-      <ContentBox>
-        <TopBar />
-        <MainBox component="main">
-          <Outlet />
-        </MainBox>
-      </ContentBox>
-    </FlexBox>
-  );
-};
 
 export default AppLayout;

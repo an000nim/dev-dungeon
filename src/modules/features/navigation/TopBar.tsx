@@ -22,40 +22,6 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-const GrowBox = styled(Box)({ flexGrow: 1 });
-const LangBox = styled(Box)(({ theme }) => ({
-  width: 88,
-  display: 'flex',
-  borderRadius: 8,
-  overflow: 'hidden',
-  border: `1px solid ${theme.palette.divider}`,
-}));
-const LangBtn = styled(Box)<{ active: boolean }>(({ theme, active }) => ({
-  width: 44,
-  textAlign: 'center',
-  fontWeight: 700,
-  fontSize: 14,
-  color: active ? theme.palette.primary.main : theme.palette.text.primary,
-  backgroundColor: active ? theme.palette.action.selected : 'transparent',
-  border: 'none',
-  outline: 'none',
-  cursor: 'pointer',
-  transition: 'all 0.2s',
-  '&:hover': { backgroundColor: theme.palette.action.hover },
-}));
-const IconBox = styled(Box)({
-  width: 48,
-  display: 'flex',
-  justifyContent: 'center',
-  marginLeft: 24,
-});
-const UserBox = styled(Box)({
-  width: 64,
-  display: 'flex',
-  justifyContent: 'center',
-  marginLeft: 24,
-});
-
 const TopBar = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -159,5 +125,39 @@ const TopBar = () => {
     </AppBar>
   );
 };
+
+const GrowBox = styled(Box)({ flexGrow: 1 });
+const LangBox = styled(Box)(({ theme }) => ({
+  width: 88,
+  display: 'flex',
+  borderRadius: 8,
+  overflow: 'hidden',
+  border: `1px solid ${theme.palette.divider}`,
+}));
+const LangBtn = styled(Box)<{ active: boolean }>(({ theme, active }) => ({
+  width: 44,
+  textAlign: 'center',
+  fontWeight: 700,
+  fontSize: 14,
+  color: active ? theme.palette.primary.main : theme.palette.text.primary,
+  backgroundColor: active ? theme.palette.action.selected : 'transparent',
+  border: 'none',
+  outline: 'none',
+  cursor: 'pointer',
+  transition: 'all 0.2s',
+  '&:hover': { backgroundColor: theme.palette.action.hover },
+}));
+const IconBox = styled(Box)({
+  width: 48,
+  display: 'flex',
+  justifyContent: 'center',
+  marginLeft: 24,
+});
+const UserBox = styled(Box)({
+  width: 64,
+  display: 'flex',
+  justifyContent: 'center',
+  marginLeft: 24,
+});
 
 export default TopBar;

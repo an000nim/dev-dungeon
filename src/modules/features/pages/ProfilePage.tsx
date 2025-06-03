@@ -1,48 +1,43 @@
-import type { User } from '@features/user/types';
-import { selectUser } from '@features/user/userSlice';
-import { useAppSelector } from '@shared/reduxTools/reduxHooks';
+import { useGetUserProfileQuery } from '@features/user/userApi';
 
 import { useTranslation } from 'react-i18next';
 
-import { Avatar, Paper, Typography } from '@mui/material';
+import { Avatar, Paper as MuiPaper, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-
-const PaddedBox = styled('div')(({ theme }) => ({
-  padding: theme.spacing(3),
-}));
-
-const CenteredColumnBox = styled('div')(() => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: 8,
-}));
-
-const MaxWidthBox = styled('div')(() => ({
-  width: '100%',
-  maxWidth: 400,
-}));
 
 const ProfilePage = () => {
   const { t } = useTranslation();
-  const user = useAppSelector(selectUser) as User | null;
+  const { data: user, isLoading, error } = useGetUserProfileQuery();
 
-  if (!user) {
+  if (isLoading) {
     return (
       <PaddedBox>
-        <Paper sx={{ p: 3, textAlign: 'center' }}>
+        <StyledPaper sx={{ p: 3, textAlign: 'center' }}>
+          <Typography variant="h5">{t('profile.title')}</Typography>
+          <Typography color="text.secondary" sx={{ mt: 2 }}>
+            {t('profile.loading', { defaultValue: 'Loading...' })}
+          </Typography>
+        </StyledPaper>
+      </PaddedBox>
+    );
+  }
+
+  if (error || !user) {
+    return (
+      <PaddedBox>
+        <StyledPaper sx={{ p: 3, textAlign: 'center' }}>
           <Typography variant="h5">{t('profile.title')}</Typography>
           <Typography color="text.secondary" sx={{ mt: 2 }}>
             {t('profile.noUser', { defaultValue: 'Please log in to view your profile.' })}
           </Typography>
-        </Paper>
+        </StyledPaper>
       </PaddedBox>
     );
   }
 
   return (
     <PaddedBox>
-      <Paper sx={{ p: 3 }}>
+      <StyledPaper sx={{ p: 3 }}>
         <CenteredColumnBox>
           <Avatar
             alt={user.username || ''}
@@ -61,9 +56,27 @@ const ProfilePage = () => {
             </Typography>
           </MaxWidthBox>
         </CenteredColumnBox>
-      </Paper>
+      </StyledPaper>
     </PaddedBox>
   );
 };
+
+const PaddedBox = styled('div')(({ theme }) => ({
+  padding: theme.spacing(3),
+}));
+
+const CenteredColumnBox = styled('div')(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: 8,
+}));
+
+const MaxWidthBox = styled('div')(() => ({
+  width: '100%',
+  maxWidth: 400,
+}));
+
+const StyledPaper = styled(MuiPaper)({});
 
 export default ProfilePage;

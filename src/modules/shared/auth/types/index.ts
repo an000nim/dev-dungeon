@@ -1,6 +1,6 @@
 import { User } from '@features/user/types';
 
-export interface AuthState {
+export type AuthState = {
   user: User | null;
   token: string | null;
-}
+};

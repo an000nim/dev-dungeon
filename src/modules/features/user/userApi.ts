@@ -39,5 +39,10 @@ export const userApi = createApi({
   }),
 });
 
+// Экспортируем хуки для использования в компонентах
 export const { useGetUserProfileQuery, useUpdateUserProfileMutation, useUpdateAvatarMutation } =
   userApi;
+
+// Селектор для получения профиля пользователя
+export const selectUser = (state: { userApi: { queries: Record<string, { data: User }> } }) =>
+  state.userApi.queries['getUserProfile(undefined)']?.data;

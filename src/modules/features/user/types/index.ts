@@ -1,12 +1,12 @@
-export interface User {
+export type User = {
   id: string;
   username: string;
   email: string;
   avatar?: string;
-}
+};
 
-export interface UserState {
+export type UserState = {
   profile: User | null;
   loading: boolean;
   error: string | null;
-}
+};

@@ -1,5 +1,4 @@
-import { RootState } from '@app/store';
-import { User } from '@features/user/types';
+import type { User } from '@features/user/types';
 import { useAppSelector } from '@shared/reduxTools/reduxHooks';
 
 import React, { useCallback, useState } from 'react';
@@ -11,7 +10,6 @@ import HomeIcon from '@mui/icons-material/Home';
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { useMediaQuery, useTheme } from '@mui/material';
 import {
   AppBar,
   Avatar,
@@ -29,6 +27,8 @@ import {
   Toolbar,
   Tooltip,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -49,7 +49,7 @@ export const Navigation = () => {
   const location = useLocation();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const user = useAppSelector((state: RootState) => state.auth.user) as User | null;
+  const user = useAppSelector((state) => state.auth.user) as User | null;
   const { t } = useTranslation();
 
   const handleDrawerToggle = useCallback(() => {
@@ -240,3 +240,5 @@ export const Navigation = () => {
     </>
   );
 };
+
+export default Navigation;

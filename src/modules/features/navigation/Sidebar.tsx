@@ -13,50 +13,6 @@ import StoreIcon from '@mui/icons-material/Store';
 import { Box, List, ListItemButton, ListItemIcon, ListItemText, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-const RootBox = styled(Box)(({ theme }) => ({
-  width: 240,
-  height: '100vh',
-  background: theme.palette.background.paper,
-  color: theme.palette.text.primary,
-  borderRight: `1px solid ${theme.palette.divider}`,
-}));
-
-const HeaderBox = styled(Box)({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  paddingLeft: 24,
-  paddingTop: 24,
-  paddingBottom: 16,
-  marginBottom: 8,
-});
-
-const LogoBox = styled(Box)({
-  width: 40,
-  height: 40,
-  borderRadius: '50%',
-  background: '#9C27FF',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginRight: 8,
-});
-
-const TitleBox = styled(Box)({
-  fontWeight: 700,
-  fontSize: 20,
-  color: '#B388FF',
-  letterSpacing: 0.5,
-  textAlign: 'left',
-  whiteSpace: 'nowrap',
-  fontFamily: "'Montserrat', 'Roboto', 'Arial', sans-serif",
-});
-
-const DividerBox = styled(Box)(({ theme }) => ({
-  borderBottom: `1px solid ${theme.palette.divider}`,
-  marginBottom: 8,
-}));
-
 const pages = [
   { path: '/', titleKey: 'nav.home', icon: HomeIcon },
   { path: '/profile', titleKey: 'nav.profile', icon: PersonIcon },
@@ -118,5 +74,49 @@ const Sidebar = () => {
     </RootBox>
   );
 };
+
+const RootBox = styled(Box)(({ theme }) => ({
+  width: 240,
+  height: '100vh',
+  background: theme.palette.background.paper,
+  color: theme.palette.text.primary,
+  borderRight: `1px solid ${theme.palette.divider}`,
+}));
+
+const HeaderBox = styled(Box)({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  paddingLeft: 24,
+  paddingTop: 24,
+  paddingBottom: 16,
+  marginBottom: 8,
+});
+
+const LogoBox = styled(Box)({
+  width: 40,
+  height: 40,
+  borderRadius: '50%',
+  background: '#9C27FF',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginRight: 8,
+});
+
+const TitleBox = styled(Box)({
+  fontWeight: 700,
+  fontSize: 20,
+  color: '#B388FF',
+  letterSpacing: 0.5,
+  textAlign: 'left',
+  whiteSpace: 'nowrap',
+  fontFamily: "'Montserrat', 'Roboto', 'Arial', sans-serif",
+});
+
+const DividerBox = styled(Box)(({ theme }) => ({
+  borderBottom: `1px solid ${theme.palette.divider}`,
+  marginBottom: 8,
+}));
 
 export default Sidebar;

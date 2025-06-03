@@ -4,15 +4,14 @@ import { useCallback } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { Button, Container as MuiContainer, Paper, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  Container as MuiContainer,
+  Paper as MuiPaper,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
-
-const StyledContainer = styled(MuiContainer)(({ theme }) => ({
-  height: '100vh',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -36,7 +35,7 @@ const LoginPage = () => {
 
   return (
     <StyledContainer>
-      <Paper
+      <StyledPaper
         elevation={3}
         sx={{
           p: 4,
@@ -75,9 +74,18 @@ const LoginPage = () => {
             {t('auth.login.submit')}
           </Button>
         </MuiContainer>
-      </Paper>
+      </StyledPaper>
     </StyledContainer>
   );
 };
+
+const StyledContainer = styled(MuiContainer)(({ theme }) => ({
+  height: '100vh',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const StyledPaper = styled(MuiPaper)({});
 
 export default LoginPage;

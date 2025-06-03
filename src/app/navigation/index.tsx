@@ -1,8 +1,8 @@
+import AppLayout from '@features/navigation/AppLayout';
 import HomePage from '@features/pages/HomePage';
 import LoginPage from '@features/pages/LoginPage';
 import ProfilePage from '@features/pages/ProfilePage';
 import SettingsPage from '@features/pages/SettingsPage';
-import AppLayout from '@shared/navigation/AppLayout';
 
 import { Navigate, Route, Routes } from 'react-router-dom';
 
