@@ -1,11 +1,11 @@
-import { useAppDispatch, useAppSelector } from '@app/hooks';
 import {
+  AuthError,
   selectIsAuthenticated,
   selectKeycloakInitialized,
   setError,
   setRedirectPath,
-} from '@app/store/slices/authSlice';
-import { AuthError } from '@shared/auth/types';
+} from '@shared/auth/authSlice';
+import { useAppDispatch, useAppSelector } from '@shared/reduxTools/reduxHooks';
 
 import { useEffect } from 'react';
 

@@ -19,7 +19,6 @@ export const AppLayout = () => {
   );
 };
 
-// Styles
 const RootBox = styled(Box)({
   display: 'flex',
 });

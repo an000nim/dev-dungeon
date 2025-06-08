@@ -5,15 +5,19 @@ import { initReactI18next } from 'react-i18next';
 import enCommon from './locales/en/common.json';
 import ruCommon from './locales/ru/common.json';
 
-i18n.use(initReactI18next).init({
-  resources: {
-    en: { common: enCommon },
-    ru: { common: ruCommon },
+export const resources = {
+  en: {
+    translation: enCommon,
   },
+  ru: {
+    translation: ruCommon,
+  },
+};
+
+i18n.use(initReactI18next).init({
+  resources,
   lng: 'ru',
   fallbackLng: 'en',
-  ns: ['common'],
-  defaultNS: 'common',
   interpolation: { escapeValue: false },
 });
 

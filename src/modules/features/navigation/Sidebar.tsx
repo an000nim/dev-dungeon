@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import GroupIcon from '@mui/icons-material/Group';
 import HomeIcon from '@mui/icons-material/Home';
 import ListAltIcon from '@mui/icons-material/ListAlt';
@@ -12,19 +13,20 @@ import PersonIcon from '@mui/icons-material/Person';
 import SchoolIcon from '@mui/icons-material/School';
 import StoreIcon from '@mui/icons-material/Store';
 import {
-  Box,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  styled,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
+import { Box, styled } from '@mui/material';
 
 const pages = [
   { path: '/', titleKey: 'nav.home', icon: HomeIcon },
   { path: '/profile', titleKey: 'nav.profile', icon: PersonIcon },
   { path: '/onboarding', titleKey: 'nav.onboarding', icon: AssignmentIcon },
+  { path: '/achievements', titleKey: 'nav.achievements', icon: EmojiEventsIcon },
   { path: '/teams', titleKey: 'nav.teams', icon: GroupIcon },
   { path: '/skills', titleKey: 'nav.skills', icon: SchoolIcon },
   { path: '/quests', titleKey: 'nav.quests', icon: ListAltIcon },
@@ -32,52 +34,81 @@ const pages = [
 ];
 
 export const Sidebar = () => {
-  const { t } = useTranslation();
+  const theme = useTheme();
+  const isCompact = useMediaQuery('(max-width:900px)');
   const navigate = useNavigate();
   const location = useLocation();
-  const isCompact = useMediaQuery('(max-width:900px)');
+  const { t } = useTranslation();
 
   return (
-    <SidebarContainer isCompact={isCompact}>
-      <LogoContainer isCompact={isCompact}>
-        <LogoIcon>
-          <AssignmentIcon sx={{ color: '#fff', fontSize: 28 }} />
-        </LogoIcon>
-        {!isCompact && <LogoText>DevDungeon</LogoText>}
-      </LogoContainer>
-      <Divider />
-      <NavList isCompact={isCompact}>
+    <SidebarRoot isCompact={isCompact}>
+      <SidebarHeader isCompact={isCompact}>
+        <SidebarLogo isCompact={isCompact}>
+          <AssignmentIcon sx={{ color: '#fff', fontSize: isCompact ? 32 : 28 }} />
+        </SidebarLogo>
+        {!isCompact && <SidebarTitle>DevDungeon</SidebarTitle>}
+      </SidebarHeader>
+      <SidebarDivider theme={theme} />
+      <List sx={{ mt: 1, flexGrow: 1, alignItems: isCompact ? 'center' : 'stretch' }}>
         {pages.map((page) => (
-          <NavItem
+          <ListItemButton
             key={page.path}
             onClick={() => navigate(page.path)}
             selected={location.pathname === page.path}
-            isCompact={isCompact}
+            sx={{
+              '&.Mui-selected': {
+                backgroundColor: theme.palette.primary.main,
+                color: '#fff',
+                '& .MuiListItemIcon-root': { color: '#fff' },
+              },
+              '&:hover': {
+                backgroundColor: theme.palette.action.hover,
+              },
+              mb: 1,
+              borderRadius: 2,
+              justifyContent: isCompact ? 'center' : 'flex-start',
+              px: isCompact ? 0 : 2,
+              width: isCompact ? 56 : 'auto',
+              minHeight: isCompact ? 64 : 56,
+              fontSize: isCompact ? 28 : 22,
+            }}
           >
-            <NavIcon isCompact={isCompact}>
-              <page.icon />
-            </NavIcon>
+            <SidebarListItemIcon isCompact={isCompact}>
+              <page.icon sx={{ fontSize: isCompact ? 32 : 28 }} />
+            </SidebarListItemIcon>
             {!isCompact && <ListItemText primary={t(page.titleKey)} />}
-          </NavItem>
+          </ListItemButton>
         ))}
-      </NavList>
-      <LogoutContainer isCompact={isCompact}>
-        <LogoutButton
+      </List>
+      <SidebarBottom isCompact={isCompact}>
+        <ListItemButton
           onClick={() => keycloak.logout({ redirectUri: window.location.origin + '/' })}
-          isCompact={isCompact}
+          sx={{
+            color: theme.palette.text.secondary,
+            borderRadius: 2,
+            opacity: 0.6,
+            '&:hover': {
+              backgroundColor: theme.palette.action.hover,
+              opacity: 1,
+            },
+            px: isCompact ? 0 : 2,
+            justifyContent: isCompact ? 'center' : 'flex-start',
+            width: isCompact ? 56 : 'auto',
+            minHeight: isCompact ? 64 : 56,
+            fontSize: isCompact ? 28 : 22,
+          }}
         >
-          <LogoutIconWrapper isCompact={isCompact}>
-            <LogoutIcon />
-          </LogoutIconWrapper>
+          <SidebarListItemIcon isCompact={isCompact} logout>
+            <LogoutIcon sx={{ fontSize: isCompact ? 32 : 28 }} />
+          </SidebarListItemIcon>
           {!isCompact && <ListItemText primary={t('nav.logout') || 'Выход'} />}
-        </LogoutButton>
-      </LogoutContainer>
-    </SidebarContainer>
+        </ListItemButton>
+      </SidebarBottom>
+    </SidebarRoot>
   );
 };
 
-// Styles
-const SidebarContainer = styled(Box, {
+const SidebarRoot = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'isCompact',
 })<{ isCompact: boolean }>(({ theme, isCompact }) => ({
   width: isCompact ? 72 : 240,
@@ -89,20 +120,22 @@ const SidebarContainer = styled(Box, {
   alignItems: isCompact ? 'center' : 'stretch',
 }));
 
-const LogoContainer = styled(Box, {
+const SidebarHeader = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'isCompact',
-})<{ isCompact: boolean }>(({ isCompact }) => ({
+})<{ isCompact: boolean }>(({ isCompact, theme }) => ({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-  paddingLeft: isCompact ? 0 : 24,
-  paddingTop: 24,
-  paddingBottom: 16,
-  marginBottom: 8,
+  paddingLeft: isCompact ? 0 : theme.spacing(3),
+  paddingTop: theme.spacing(3),
+  paddingBottom: theme.spacing(2),
+  marginBottom: theme.spacing(1),
   justifyContent: isCompact ? 'center' : 'flex-start',
 }));
 
-const LogoIcon = styled(Box)({
+const SidebarLogo = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'isCompact',
+})<{ isCompact: boolean }>(({ isCompact }) => ({
   width: 40,
   height: 40,
   borderRadius: '50%',
@@ -110,10 +143,10 @@ const LogoIcon = styled(Box)({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  marginRight: 8,
-});
+  marginRight: !isCompact ? 8 : 0,
+}));
 
-const LogoText = styled(Box)({
+const SidebarTitle = styled(Box)(({ theme }) => ({
   fontWeight: 700,
   fontSize: 20,
   color: '#B388FF',
@@ -121,81 +154,32 @@ const LogoText = styled(Box)({
   textAlign: 'left',
   whiteSpace: 'nowrap',
   fontFamily: "'Montserrat', 'Roboto', 'Arial', sans-serif",
-});
+}));
 
-const Divider = styled(Box)(({ theme }) => ({
+const SidebarDivider = styled(Box)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.divider}`,
-  marginBottom: 8,
+  marginBottom: theme.spacing(1),
   width: '100%',
 }));
 
-const NavList = styled(List, {
-  shouldForwardProp: (prop) => prop !== 'isCompact',
-})<{ isCompact: boolean }>(({ isCompact }) => ({
-  marginTop: 8,
-  flexGrow: 1,
-  alignItems: isCompact ? 'center' : 'stretch',
-}));
-
-const NavItem = styled(ListItemButton, {
-  shouldForwardProp: (prop) => prop !== 'isCompact' && prop !== 'selected',
-})<{ isCompact: boolean; selected?: boolean }>(({ theme, isCompact, selected }) => ({
-  '&.Mui-selected': {
-    backgroundColor: theme.palette.primary.main,
-    color: '#fff',
-    '& .MuiListItemIcon-root': { color: '#fff' },
-  },
-  '&:hover': {
-    backgroundColor: theme.palette.action.hover,
-  },
-  marginBottom: 8,
-  borderRadius: 8,
-  justifyContent: isCompact ? 'center' : 'flex-start',
-  paddingLeft: isCompact ? 0 : 16,
-  paddingRight: isCompact ? 0 : 16,
-  width: isCompact ? 56 : 'auto',
-}));
-
-const NavIcon = styled(ListItemIcon, {
-  shouldForwardProp: (prop) => prop !== 'isCompact',
-})<{ isCompact: boolean }>(({ isCompact }) => ({
+const SidebarListItemIcon = styled(ListItemIcon, {
+  shouldForwardProp: (prop) => prop !== 'isCompact' && prop !== 'logout',
+})<{ isCompact: boolean; logout?: boolean }>(({ isCompact }) => ({
   color: 'inherit',
   minWidth: 0,
   justifyContent: 'center',
   marginRight: isCompact ? 0 : 16,
+  fontSize: isCompact ? 32 : 28,
 }));
 
-const LogoutContainer = styled(Box, {
+const SidebarBottom = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'isCompact',
-})<{ isCompact: boolean }>(({ isCompact }) => ({
+})<{ isCompact: boolean }>(({ isCompact, theme }) => ({
   marginTop: 'auto',
-  marginBottom: 16,
-  paddingLeft: isCompact ? 0 : 16,
-  paddingRight: isCompact ? 0 : 16,
+  marginBottom: theme.spacing(2),
+  paddingLeft: isCompact ? 0 : theme.spacing(2),
+  paddingRight: isCompact ? 0 : theme.spacing(2),
   width: '100%',
-}));
-
-const LogoutButton = styled(ListItemButton, {
-  shouldForwardProp: (prop) => prop !== 'isCompact',
-})<{ isCompact: boolean }>(({ theme, isCompact }) => ({
-  color: theme.palette.text.secondary,
-  borderRadius: 8,
-  opacity: 0.6,
-  '&:hover': {
-    backgroundColor: theme.palette.action.hover,
-    opacity: 1,
-  },
+  display: 'flex',
   justifyContent: isCompact ? 'center' : 'flex-start',
-  paddingLeft: isCompact ? 0 : 16,
-  paddingRight: isCompact ? 0 : 16,
-  width: isCompact ? 56 : 'auto',
-}));
-
-const LogoutIconWrapper = styled(ListItemIcon, {
-  shouldForwardProp: (prop) => prop !== 'isCompact',
-})<{ isCompact: boolean }>(({ theme, isCompact }) => ({
-  color: theme.palette.text.secondary,
-  minWidth: 0,
-  justifyContent: 'center',
-  marginRight: isCompact ? 0 : 16,
 }));

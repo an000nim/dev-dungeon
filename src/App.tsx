@@ -1,5 +1,5 @@
+import { AppRoutes } from '@app/navigation';
 import { store } from '@app/store';
-import { AppRoutes } from '@features/navigation/AppRoutes';
 import { KeycloakInitializer } from '@shared/auth/KeycloakInitializer';
 import '@shared/i18n/config';
 import { ThemeProvider } from '@shared/theme/ThemeProvider';

@@ -1,4 +1,4 @@
-import { selectUser } from '@shared/auth/authSlice';
+import type { User } from '@features/user/types';
 import { keycloak } from '@shared/auth/config/keycloak';
 import { useLanguage } from '@shared/i18n/hooks/useLanguage';
 import { useAppSelector } from '@shared/reduxTools/reduxHooks';
@@ -6,55 +6,60 @@ import { useAppSelector } from '@shared/reduxTools/reduxHooks';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import { Menu as MenuIcon } from '@mui/icons-material';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { AppBar, Avatar, Box, IconButton, Toolbar, Tooltip, styled } from '@mui/material';
+import { AppBar, Avatar, IconButton, Toolbar, Tooltip } from '@mui/material';
+import { Box, styled } from '@mui/material';
 
 export const TopBar = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const user = useAppSelector(selectUser);
+  const user = useAppSelector((state) => state.auth.user) as User | null;
   const { currentLanguage, changeLanguage } = useLanguage();
+  const coins = user?.coins ?? 0;
 
   return (
     <StyledAppBar position="static" elevation={0}>
-      <Toolbar>
-        <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-          <MenuIcon />
-        </IconButton>
-        <Spacer />
-        <LanguageSwitcher>
-          <LanguageButton isActive={currentLanguage === 'ru'} onClick={() => changeLanguage('ru')}>
+      <StyledToolbar>
+        <GrowBox />
+        <LangSwitcherBox>
+          <LangButton isActive={currentLanguage === 'ru'} onClick={() => changeLanguage('ru')}>
             RU
-          </LanguageButton>
-          <LanguageButton isActive={currentLanguage === 'en'} onClick={() => changeLanguage('en')}>
+          </LangButton>
+          <LangButton isActive={currentLanguage === 'en'} onClick={() => changeLanguage('en')}>
             EN
-          </LanguageButton>
-        </LanguageSwitcher>
-        <SettingsContainer>
+          </LangButton>
+        </LangSwitcherBox>
+        <SettingsBox>
           <IconButton color="inherit" onClick={() => navigate('/settings')}>
             <SettingsIcon />
           </IconButton>
-        </SettingsContainer>
-        <UserContainer>
+        </SettingsBox>
+        <CoinsBox>
+          <CoinIconBox>
+            <MonetizationOnIcon sx={{ color: '#FFD600', fontSize: 28 }} />
+          </CoinIconBox>
+          <CoinsValue>{coins}</CoinsValue>
+        </CoinsBox>
+        <UserBox>
           {user ? (
             <Tooltip title={user.username}>
-              <UserAvatar>
+              <IconButton sx={{ p: 0 }}>
                 <Avatar alt={user.username} src={user.avatar || ''} />
-              </UserAvatar>
+              </IconButton>
             </Tooltip>
           ) : (
-            <LoginButton color="inherit" onClick={() => keycloak.login()}>
+            <IconButton color="inherit" onClick={() => keycloak.login()} sx={{ minWidth: 64 }}>
               {t('nav.login')}
-            </LoginButton>
+            </IconButton>
           )}
-        </UserContainer>
-      </Toolbar>
+        </UserBox>
+      </StyledToolbar>
     </StyledAppBar>
   );
 };
 
-// Styles
+// ===== Стили внизу файла =====
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   background: theme.palette.background.paper,
   color: theme.palette.text.primary,
@@ -62,19 +67,28 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.divider}`,
 }));
 
-const Spacer = styled(Box)({
+const StyledToolbar = styled(Toolbar)({
+  minHeight: 64,
+  display: 'flex',
+  alignItems: 'center',
+  width: '100%',
+  paddingLeft: 0,
+  paddingRight: 0,
+});
+
+const GrowBox = styled(Box)({
   flexGrow: 1,
 });
 
-const LanguageSwitcher = styled(Box)(({ theme }) => ({
+const LangSwitcherBox = styled(Box)(({ theme }) => ({
   width: 88,
   display: 'flex',
-  borderRadius: 16,
+  borderRadius: 2,
   overflow: 'hidden',
   border: `1px solid ${theme.palette.divider}`,
 }));
 
-const LanguageButton = styled('button', {
+const LangButton = styled('button', {
   shouldForwardProp: (prop) => prop !== 'isActive',
 })<{ isActive: boolean }>(({ theme, isActive }) => ({
   width: 44,
@@ -87,29 +101,43 @@ const LanguageButton = styled('button', {
   outline: 'none',
   cursor: 'pointer',
   transition: 'all 0.2s',
-  '&:hover': {
-    backgroundColor: theme.palette.action.hover,
-  },
+  '&:hover': { backgroundColor: theme.palette.action.hover },
 }));
 
-const SettingsContainer = styled(Box)({
+const SettingsBox = styled(Box)(({ theme }) => ({
   width: 48,
   display: 'flex',
   justifyContent: 'center',
-  marginLeft: 24,
+  marginLeft: theme.spacing(3),
+}));
+
+const CoinsBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  background: 'transparent',
+  borderRadius: 14,
+  padding: '2px 18px 2px 10px',
+  marginLeft: theme.spacing(3),
+  height: 40,
+  minWidth: 80,
+}));
+
+const CoinIconBox = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  marginRight: 8,
 });
 
-const UserContainer = styled(Box)({
+const CoinsValue = styled('span')(({ theme }) => ({
+  color: theme.palette.text.primary,
+  fontWeight: 700,
+  fontSize: 24,
+  letterSpacing: 1,
+}));
+
+const UserBox = styled(Box)(({ theme }) => ({
   width: 64,
   display: 'flex',
   justifyContent: 'center',
-  marginLeft: 24,
-});
-
-const UserAvatar = styled(IconButton)({
-  padding: 0,
-});
-
-const LoginButton = styled(IconButton)({
-  minWidth: 64,
-});
+  marginLeft: theme.spacing(3),
+}));

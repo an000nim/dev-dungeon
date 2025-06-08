@@ -7,26 +7,43 @@
     "skills": "Skills",
     "quests": "Quests",
     "store": "Store",
-    "login": "Login"
+    "settings": "Settings",
+    "login": "Login",
+    "menu": "Menu",
+    "logout": "Logout",
+    "achievements": "Achievements"
   },
   "settings": {
     "title": "Settings",
     "theme": {
       "dark": "Dark Theme",
-      "light": "Light Theme"
-    }
+      "light": "Light Theme",
+      "switchToDark": "Switch to dark theme",
+      "switchToLight": "Switch to light theme"
+    },
+    "language": "Language"
   },
   "auth": {
     "login": {
-      "title": "Login",
+      "title": "Login to System",
       "email": "Email",
       "password": "Password",
-      "submit": "Sign In"
+      "submit": "Login",
+      "loading": "Logging in...",
+      "error": "Invalid email or password"
     }
   },
   "home": {
     "title": "Home Screen",
-    "welcome": "Welcome to our application"
+    "welcome": "Welcome to our application",
+    "dashboard": "Dashboard",
+    "welcomeUser": "Welcome, {{name}}!",
+    "dateFormat": "{{date}} | Welcome, {{name}}!",
+    "character": "Your Character",
+    "quests": "Active Quests",
+    "team": "Team Activity",
+    "achievements": "Recent Achievements",
+    "activityCalendar": "Activity Calendar"
   },
   "common": {
     "loading": "Loading...",
@@ -36,7 +53,101 @@
   "profile": {
     "title": "Profile",
     "username": "Username",
-    "email": "Email",
-    "noUser": "Please log in to view your profile."
+    "email": "Email"
+  },
+  "onboarding": {
+    "welcome": "Welcome to DevDungeon, {{name}}!",
+    "intro": "Let's get started! Complete these steps to unlock all features:",
+    "step": {
+      "profile": "Fill out your profile",
+      "team": "Join or create a team",
+      "quest": "Complete your first quest",
+      "achievements": "Check out achievements",
+      "settings": "Set up theme and language"
+    },
+    "reward": "Complete all steps and get +100 XP and the \"Newcomer\" badge!",
+    "skip": "Skip",
+    "done": "Done!",
+    "progress": "{{done}} of {{total}} steps completed"
+  },
+  "teams": {
+    "title": "Teams",
+    "createOrJoin": "Create or Join Team",
+    "noTeams": "You are not a member of any team yet.",
+    "level": "Level",
+    "members": "Members",
+    "details": "View Details"
+  },
+  "skills": {
+    "title": "Skills",
+    "add": "Add Skill",
+    "noSkills": "You have no skills yet.",
+    "level": "Level",
+    "xp": "XP",
+    "upgrade": "Upgrade",
+    "details": "Details",
+    "recommend": "Recommended",
+    "recommendedForYou": "Recommended for you",
+    "progress": "Progress",
+    "nextLevel": "To next level",
+    "recentActivity": "Recent activity",
+    "skill": "Skill"
+  },
+  "quests": {
+    "title": "Quests",
+    "add": "Add Quest",
+    "noQuests": "No quests found.",
+    "active": "Active Quests",
+    "completed": "Completed Quests",
+    "progress": "Progress",
+    "reward": "Reward",
+    "deadline": "Deadline",
+    "type": "Type",
+    "personal": "Personal",
+    "team": "Team",
+    "daily": "Daily",
+    "take": "Take Quest",
+    "details": "Details",
+    "status": {
+      "active": "Active",
+      "completed": "Completed",
+      "failed": "Failed"
+    },
+    "xp": "XP",
+    "coins": "Coins",
+    "new": "New Quest",
+    "search": "Search quests...",
+    "filter": "Filter",
+    "myQuests": "My Quests",
+    "available": "Available Quests",
+    "all": "All Quests"
+  },
+  "store": {
+    "title": "Store",
+    "buy": "Buy",
+    "noItems": "No items available.",
+    "items": "Items",
+    "price": "Price",
+    "balance": "Your balance",
+    "buySuccess": "Purchase successful!",
+    "buyError": "Purchase failed.",
+    "category": "Category",
+    "filter": "Filter",
+    "search": "Search items...",
+    "myItems": "My Items",
+    "allItems": "All Items",
+    "confirmBuy": "Confirm purchase?",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "itemBought": "Item bought!",
+    "item": "Item",
+    "quantity": "Quantity"
+  },
+  "app": {
+    "name": "My App"
+  },
+  "achievements": {
+    "title": "Achievements",
+    "noAchievements": "No achievements yet."
   }
 }

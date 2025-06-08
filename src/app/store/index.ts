@@ -1,8 +1,7 @@
-import { authApi } from '@app/api/authApi';
-import { usersApi } from '@app/api/usersApi';
+import { userApi } from '@features/user/userApi';
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '@shared/auth/authSlice';
-import languageReducer from '@shared/i18n/languageSlice';
+import languageReducer from '@shared/i18n/hooks/useLanguage';
 import themeReducer from '@shared/theme/themeSlice';
 
 export const store = configureStore({
@@ -10,11 +9,9 @@ export const store = configureStore({
     auth: authReducer,
     language: languageReducer,
     theme: themeReducer,
-    [authApi.reducerPath]: authApi.reducer,
-    [usersApi.reducerPath]: usersApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware, usersApi.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(userApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -3,6 +3,7 @@ export type User = {
   username: string;
   email: string;
   avatar?: string;
+  coins?: number;
 };
 
 export type UserState = {

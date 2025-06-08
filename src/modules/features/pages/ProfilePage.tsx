@@ -1,6 +1,6 @@
-import { useAppSelector } from '@app/hooks';
 import { RootState } from '@app/store';
-import type { User } from '@shared/auth/types';
+import type { User } from '@features/user/types';
+import { useAppSelector } from '@shared/reduxTools/reduxHooks';
 
 import { useTranslation } from 'react-i18next';
 

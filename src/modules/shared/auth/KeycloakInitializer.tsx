@@ -16,34 +16,46 @@ export const KeycloakInitializer = ({ children }: KeycloakInitializerProps) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    keycloak.init({ onLoad: 'login-required' }).then((authenticated) => {
-      if (keycloak.authenticated) {
-        dispatch(
-          setAuth({
-            isAuthenticated: true,
-            user: keycloak.tokenParsed
-              ? {
-                  id: keycloak.tokenParsed.sub || '',
-                  username: keycloak.tokenParsed.preferred_username || '',
-                  email: keycloak.tokenParsed.email || '',
-                  avatar: '',
-                }
-              : null,
-            token: keycloak.token ?? null,
-          })
-        );
-      } else {
-        dispatch(
-          setAuth({
-            isAuthenticated: false,
-            user: null,
-            token: null,
-          })
-        );
+    const initializeKeycloak = async () => {
+      try {
+        if (!keycloak.authenticated) {
+          const authenticated = await keycloak.init({ onLoad: 'login-required' });
+
+          if (authenticated) {
+            dispatch(
+              setAuth({
+                isAuthenticated: true,
+                user: keycloak.tokenParsed
+                  ? {
+                      id: keycloak.tokenParsed.sub || '',
+                      username: keycloak.tokenParsed.preferred_username || '',
+                      email: keycloak.tokenParsed.email || '',
+                      avatar: '',
+                    }
+                  : null,
+                token: keycloak.token ?? null,
+              })
+            );
+          } else {
+            dispatch(
+              setAuth({
+                isAuthenticated: false,
+                user: null,
+                token: null,
+              })
+            );
+          }
+        }
+        dispatch(setKeycloakInitialized(true));
+        setKeycloakReady(true);
+      } catch (error) {
+        console.error('Failed to initialize Keycloak:', error);
+        dispatch(setKeycloakInitialized(true));
+        setKeycloakReady(true);
       }
-      dispatch(setKeycloakInitialized(true));
-      setKeycloakReady(true);
-    });
+    };
+
+    initializeKeycloak();
   }, [dispatch]);
 
   if (!isKeycloakReady) {

@@ -1,5 +1,6 @@
 import { AppLayout } from '@features/navigation/AppLayout';
 import { ProtectedRoute } from '@features/navigation/ProtectedRoute';
+import { AchievementsPage } from '@features/pages/AchievementsPage';
 import { HomeScreen } from '@features/pages/HomePage';
 import { OnboardingPage } from '@features/pages/OnboardingPage';
 import { ProfilePage } from '@features/pages/ProfilePage';
@@ -9,14 +10,12 @@ import { SkillsPage } from '@features/pages/SkillsPage';
 import { StorePage } from '@features/pages/StorePage';
 import { TeamsPage } from '@features/pages/TeamsPage';
 import { AuthCallback } from '@shared/auth/components/AuthCallback';
-import { AuthErrorHandler } from '@shared/auth/components/AuthErrorHandler';
 
 import { Route, Routes } from 'react-router-dom';
 
 export const AppRoutes = () => {
   return (
     <>
-      <AuthErrorHandler />
       <Routes>
         <Route path="/auth" element={<AuthCallback />} />
         <Route
@@ -31,6 +30,7 @@ export const AppRoutes = () => {
           <Route path="profile" element={<ProfilePage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="onboarding" element={<OnboardingPage />} />
+          <Route path="achievements" element={<AchievementsPage />} />
           <Route path="teams" element={<TeamsPage />} />
           <Route path="skills" element={<SkillsPage />} />
           <Route path="quests" element={<QuestsPage />} />

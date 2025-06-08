@@ -1,6 +1,5 @@
-import { useAppSelector } from '@app/hooks';
-import { selectUser } from '@app/store/slices/authSlice';
 import { LanguageSwitcher } from '@shared/i18n/components/LanguageSwitcher';
+import { useAppSelector } from '@shared/reduxTools/reduxHooks';
 
 import { useCallback, useState } from 'react';
 

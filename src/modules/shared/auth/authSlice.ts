@@ -1,7 +1,7 @@
 // src/app/store/slices/authSlice.ts
 import type { RootState } from '@app/store';
+import type { User } from '@features/user/types';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import type { User } from '@shared/auth/types';
 
 // Добавляем enum для ошибок авторизации
 export enum AuthError {
@@ -105,7 +105,6 @@ export const { setAuth, setError, clearError, setKeycloakInitialized, setRedirec
 // Экспортируем селекторы с правильной типизацией
 export const selectAuth = (state: RootState) => state.auth;
 export const selectIsAuthenticated = (state: RootState) => state.auth.isAuthenticated;
-export const selectAuthError = (state: RootState) => state.auth.error;
 export const selectIsErrorOccurred = (state: RootState) => state.auth.isErrorOccurred;
 export const selectUser = (state: RootState) => state.auth.user;
 export const selectToken = (state: RootState) => state.auth.token;

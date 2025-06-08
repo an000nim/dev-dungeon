@@ -1,66 +1,49 @@
 # DevDungeon
 
-## Быстрый старт
-
 ### 1. Клонируйте репозиторий
 
 ```bash
-git clone <URL_ВАШЕГО_РЕПОЗИТОРИЯ>
+git clone <URL-ВАШЕГО-РЕПОЗИТОРИЯ>
 cd dev-dungeon
 ```
 
-### 2. Установите зависимости
+### 2. В файле `.env` в корне проекта
+
+- Замените значения на свои из Keycloak.
+
+### 3. Запустите Keycloak через Docker
+
+```bash
+docker run -p 8080:8080 \
+  -e KEYCLOAK_ADMIN=admin \
+  -e KEYCLOAK_ADMIN_PASSWORD=admin \
+  -e KC_FRAME_OPTIONS=ALLOWALL \
+  quay.io/keycloak/keycloak:latest \
+  start-dev
+```
+
+- После запуска Keycloak будет доступен по адресу http://localhost:8080
+- Логин: `admin`, пароль: `admin`
+
+### 4. Настройте Keycloak
+
+1. Откройте http://localhost:8080 и войдите как admin.
+2. Создайте новый Realm (например, `myrealm`).
+3. Создайте клиента (например, `myclient`) с типом OpenID Connect.
+4. В настройках клиента:
+   - **Root URL:** `http://localhost:3000`
+   - **Valid Redirect URIs:** `http://localhost:3000/*`
+   - **Web Origins:** `http://localhost:3000`
+5. Создайте пользователя для теста.
+
+### 5. Установите зависимости и запустите фронтенд
 
 ```bash
 yarn install
-```
-
-### 3. Настройте переменные окружения
-
-Скопируйте пример файла и заполните при необходимости:
-
-```bash
-cp .env.example .env
-```
-
-**Пример .env:**
-
-```
-REACT_APP_KEYCLOAK_URL=http://localhost:8080/auth
-REACT_APP_KEYCLOAK_REALM=devdungeon
-REACT_APP_KEYCLOAK_CLIENT_ID=frontend
-REACT_APP_API_URL=http://localhost:3001/api
-```
-
-### 4. Запустите Keycloak (Docker)
-
-```bash
-docker compose up -d
-```
-
-- Keycloak будет доступен на http://localhost:8080
-- Админ-панель: http://localhost:8080/admin (логин/пароль: admin/admin)
-- Realm, клиент и тестовый пользователь уже преднастроены (см. ниже)
-
-### 5. Запустите фронтенд
-
-```bash
 yarn start
 ```
 
-- Приложение будет доступно на http://localhost:3000
+### 6. Откройте приложение
 
-### 6. Вход в приложение
-
-- **Логин:** `testuser`
-- **Пароль:** `testpassword`
-
----
-
-## Структура проекта
-
-- `src/` — исходный код React-приложения
-- `docker-compose.yml` — быстрый запуск Keycloak
-- `.env.example` — пример переменных окружения
-
----
+- Перейдите в браузере на [http://localhost:3000](http://localhost:3000)
+- Для входа используйте данные тестового пользователя из Keycloak

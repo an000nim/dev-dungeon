@@ -1,19 +1,9 @@
+import type { User } from '@features/user/types';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
-import { User } from './types';
 
 export const userApi = createApi({
   reducerPath: 'userApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: '/api',
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        headers.set('authorization', `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
+  baseQuery: fetchBaseQuery({ baseUrl: '/api/' }),
   tagTypes: ['User'],
   endpoints: (builder) => ({
     getUserProfile: builder.query<User, void>({
@@ -36,12 +26,38 @@ export const userApi = createApi({
       }),
       invalidatesTags: ['User'],
     }),
+    login: builder.mutation<{ user: User; token: string }, { email: string; password: string }>({
+      query: (credentials) => ({
+        url: 'auth/login',
+        method: 'POST',
+        body: credentials,
+      }),
+    }),
+    register: builder.mutation<
+      { user: User; token: string },
+      { email: string; password: string; username: string }
+    >({
+      query: (userData) => ({
+        url: 'auth/register',
+        method: 'POST',
+        body: userData,
+      }),
+    }),
+    getCurrentUser: builder.query<User, void>({
+      query: () => 'auth/me',
+    }),
   }),
 });
 
 // Экспортируем хуки для использования в компонентах
-export const { useGetUserProfileQuery, useUpdateUserProfileMutation, useUpdateAvatarMutation } =
-  userApi;
+export const {
+  useGetUserProfileQuery,
+  useUpdateUserProfileMutation,
+  useUpdateAvatarMutation,
+  useLoginMutation,
+  useRegisterMutation,
+  useGetCurrentUserQuery,
+} = userApi;
 
 // Селектор для получения профиля пользователя
 export const selectUser = (state: { userApi: { queries: Record<string, { data: User }> } }) =>
