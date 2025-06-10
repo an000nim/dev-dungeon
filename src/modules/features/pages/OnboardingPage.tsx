@@ -1,3 +1,4 @@
+import { selectUser } from '@shared/auth/authSlice';
 import { useAppSelector } from '@shared/reduxTools/reduxHooks';
 
 import { useTranslation } from 'react-i18next';
@@ -17,7 +18,7 @@ import { Box, Paper, styled } from '@mui/material';
 
 export const OnboardingPage = () => {
   const { t } = useTranslation();
-  const user = useAppSelector((state) => state.auth.user);
+  const user = useAppSelector(selectUser);
 
   // Статичный чеклист (можно сделать динамическим позже)
   const steps = [

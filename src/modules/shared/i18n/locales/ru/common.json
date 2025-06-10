@@ -26,7 +26,7 @@
   "auth": {
     "login": {
       "title": "Вход в систему",
-      "email": "Email",
+    "email": "Email",
       "password": "Пароль",
       "submit": "Войти",
       "loading": "Выполняется вход...",
@@ -53,7 +53,18 @@
   "profile": {
     "title": "Профиль",
     "username": "Имя пользователя",
-    "email": "Email"
+    "email": "Email",
+    "edit": "Редактировать",
+    "level": "Уровень",
+    "levelProgress": "Прогресс уровня",
+    "coins": "Монеты",
+    "achievements": "Достижения",
+    "quests": "Квесты",
+    "completedQuests": "Завершённые квесты",
+    "activeQuests": "Активные квесты",
+    "team": "Команда",
+    "teamProjects": "Командные проекты",
+    "skills": "Навыки"
   },
   "app": {
     "name": "Мое приложение"
@@ -148,6 +159,37 @@
   },
   "achievements": {
     "title": "Достижения",
-    "noAchievements": "Пока нет достижений."
+    "noAchievements": "Пока нет достижений",
+    "viewAll": "Посмотреть все достижения",
+    "items": {
+      "codeMaster": {
+        "title": "Мастер кода",
+        "description": "Напишите 10,000 строк кода"
+      },
+      "bugHunter": {
+        "title": "Баг-хантер",
+        "description": "Исправьте 50 критических ошибок"
+      },
+      "teamPlayer": {
+        "title": "Командный игрок",
+        "description": "Завершите 5 командных проектов"
+      },
+      "nightCoder": {
+        "title": "Ночной кодер",
+        "description": "Работайте после 22:00 10 раз"
+      },
+      "firstSteps": {
+        "title": "Первые шаги",
+        "description": "Завершите онбординг"
+      },
+      "mentor": {
+        "title": "Наставник",
+        "description": "Помогите 3 новым сотрудникам"
+      },
+      "extra": {
+        "title": "Ещё достижение",
+        "description": "Описание ещё одного достижения"
+      }
+    }
   }
 }

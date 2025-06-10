@@ -1,6 +1,6 @@
+import { AchievementsPage } from '@features/achivements/AchievementsPage';
 import { AppLayout } from '@features/navigation/AppLayout';
 import { ProtectedRoute } from '@features/navigation/ProtectedRoute';
-import { AchievementsPage } from '@features/pages/AchievementsPage';
 import { HomeScreen } from '@features/pages/HomePage';
 import { OnboardingPage } from '@features/pages/OnboardingPage';
 import { ProfilePage } from '@features/pages/ProfilePage';
@@ -30,11 +30,11 @@ export const AppRoutes = () => {
           <Route path="profile" element={<ProfilePage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="onboarding" element={<OnboardingPage />} />
-          <Route path="achievements" element={<AchievementsPage />} />
           <Route path="teams" element={<TeamsPage />} />
           <Route path="skills" element={<SkillsPage />} />
           <Route path="quests" element={<QuestsPage />} />
           <Route path="store" element={<StorePage />} />
+          <Route path="achievements" element={<AchievementsPage />} />
         </Route>
       </Routes>
     </>

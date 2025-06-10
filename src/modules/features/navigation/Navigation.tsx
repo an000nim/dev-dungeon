@@ -1,3 +1,4 @@
+import { selectUser } from '@shared/auth/authSlice';
 import { LanguageSwitcher } from '@shared/i18n/components/LanguageSwitcher';
 import { useAppSelector } from '@shared/reduxTools/reduxHooks';
 

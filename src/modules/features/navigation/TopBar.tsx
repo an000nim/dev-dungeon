@@ -1,4 +1,4 @@
-import type { User } from '@features/user/types';
+import { selectUser } from '@shared/auth/authSlice';
 import { keycloak } from '@shared/auth/config/keycloak';
 import { useLanguage } from '@shared/i18n/hooks/useLanguage';
 import { useAppSelector } from '@shared/reduxTools/reduxHooks';
@@ -14,7 +14,7 @@ import { Box, styled } from '@mui/material';
 export const TopBar = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const user = useAppSelector((state) => state.auth.user) as User | null;
+  const user = useAppSelector(selectUser);
   const { currentLanguage, changeLanguage } = useLanguage();
   const coins = user?.coins ?? 0;
 
@@ -68,7 +68,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
 }));
 
 const StyledToolbar = styled(Toolbar)({
-  minHeight: 64,
+  minHeight: 48,
   display: 'flex',
   alignItems: 'center',
   width: '100%',
@@ -108,7 +108,7 @@ const SettingsBox = styled(Box)(({ theme }) => ({
   width: 48,
   display: 'flex',
   justifyContent: 'center',
-  marginLeft: theme.spacing(3),
+  marginLeft: theme.spacing(1.5),
 }));
 
 const CoinsBox = styled(Box)(({ theme }) => ({
@@ -116,10 +116,10 @@ const CoinsBox = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   background: 'transparent',
   borderRadius: 14,
-  padding: '2px 18px 2px 10px',
-  marginLeft: theme.spacing(3),
-  height: 40,
-  minWidth: 80,
+  padding: '2px 10px 2px 6px',
+  marginLeft: theme.spacing(1.5),
+  height: 32,
+  minWidth: 60,
 }));
 
 const CoinIconBox = styled(Box)({
@@ -136,8 +136,8 @@ const CoinsValue = styled('span')(({ theme }) => ({
 }));
 
 const UserBox = styled(Box)(({ theme }) => ({
-  width: 64,
+  width: 48,
   display: 'flex',
   justifyContent: 'center',
-  marginLeft: theme.spacing(3),
+  marginLeft: theme.spacing(1.5),
 }));

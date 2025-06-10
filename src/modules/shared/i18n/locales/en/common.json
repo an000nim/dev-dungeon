@@ -53,7 +53,18 @@
   "profile": {
     "title": "Profile",
     "username": "Username",
-    "email": "Email"
+    "email": "Email",
+    "edit": "Edit Profile",
+    "level": "Level",
+    "levelProgress": "Level Progress",
+    "coins": "Coins",
+    "achievements": "Achievements",
+    "quests": "Quests",
+    "completedQuests": "Completed Quests",
+    "activeQuests": "Active Quests",
+    "team": "Team",
+    "teamProjects": "Team Projects",
+    "skills": "Skills"
   },
   "onboarding": {
     "welcome": "Welcome to DevDungeon, {{name}}!",
@@ -148,6 +159,37 @@
   },
   "achievements": {
     "title": "Achievements",
-    "noAchievements": "No achievements yet."
+    "noAchievements": "No achievements yet",
+    "viewAll": "View all achievements",
+    "items": {
+      "codeMaster": {
+        "title": "Code Master",
+        "description": "Write 10,000 lines of code"
+      },
+      "bugHunter": {
+        "title": "Bug Hunter",
+        "description": "Fix 50 critical bugs"
+      },
+      "teamPlayer": {
+        "title": "Team Player",
+        "description": "Complete 5 team projects"
+      },
+      "nightCoder": {
+        "title": "Night Coder",
+        "description": "Work after 10 PM 10 times"
+      },
+      "firstSteps": {
+        "title": "First Steps",
+        "description": "Complete onboarding"
+      },
+      "mentor": {
+        "title": "Mentor",
+        "description": "Help 3 new employees"
+      },
+      "extra": {
+        "title": "Extra Achievement",
+        "description": "Description of another achievement"
+      }
+    }
   }
 }

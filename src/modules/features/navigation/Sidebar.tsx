@@ -126,10 +126,10 @@ const SidebarHeader = styled(Box, {
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-  paddingLeft: isCompact ? 0 : theme.spacing(3),
-  paddingTop: theme.spacing(3),
-  paddingBottom: theme.spacing(2),
-  marginBottom: theme.spacing(1),
+  paddingLeft: isCompact ? 0 : theme.spacing(1.5),
+  paddingTop: theme.spacing(1.5),
+  paddingBottom: theme.spacing(1),
+  marginBottom: theme.spacing(0.5),
   justifyContent: isCompact ? 'center' : 'flex-start',
 }));
 

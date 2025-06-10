@@ -21,6 +21,9 @@ export const AppLayout = () => {
 
 const RootBox = styled(Box)({
   display: 'flex',
+  minHeight: '100vh',
+  width: '100%',
+  alignItems: 'stretch',
 });
 
 const MainContainer = styled(Box)(({ theme }) => ({
@@ -28,10 +31,11 @@ const MainContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   backgroundColor: theme.palette.background.default,
-  minHeight: '100vh',
+  minHeight: 0,
 }));
 
 const ContentBox = styled(Box)({
   flexGrow: 1,
-  padding: 24,
+  padding: 12,
+  minHeight: 0,
 });

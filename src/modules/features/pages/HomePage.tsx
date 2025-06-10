@@ -1,14 +1,17 @@
+import { RecentAchievements } from '@features/achivements/RecentAchievements';
+import { selectUser } from '@shared/auth/authSlice';
 import { useAppSelector } from '@shared/reduxTools/reduxHooks';
 
 import { useTranslation } from 'react-i18next';
 
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import HomeIcon from '@mui/icons-material/Home';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Box, Paper, styled } from '@mui/material';
 
 export const HomeScreen = () => {
   const { t, i18n } = useTranslation();
-  const user = useAppSelector((state) => state.auth.user);
+  const user = useAppSelector(selectUser);
   const theme = useTheme();
   const isNarrow = useMediaQuery('(max-width:900px)');
 
@@ -22,6 +25,45 @@ export const HomeScreen = () => {
   };
   const locale = i18n.language === 'en' ? 'en-US' : 'ru-RU';
   const formattedDate = moscowDate.toLocaleDateString(locale, options);
+
+  // Мок-данные достижений (временно, до подключения бэка)
+  const mockAchievements = [
+    {
+      id: 1,
+      key: 'codeMaster',
+      icon: <EmojiEventsIcon sx={{ color: 'url(#grad1)' }} />,
+    },
+    {
+      id: 2,
+      key: 'bugHunter',
+      icon: <EmojiEventsIcon sx={{ color: '#FF5C5C' }} />,
+    },
+    {
+      id: 3,
+      key: 'teamPlayer',
+      icon: <EmojiEventsIcon sx={{ color: '#1CB56E' }} />,
+    },
+    {
+      id: 4,
+      key: 'nightCoder',
+      icon: <EmojiEventsIcon sx={{ color: '#9C27FF' }} />,
+    },
+    {
+      id: 5,
+      key: 'firstSteps',
+      icon: <EmojiEventsIcon sx={{ color: '#FFD600' }} />,
+    },
+    {
+      id: 6,
+      key: 'mentor',
+      icon: <EmojiEventsIcon sx={{ color: '#B388FF' }} />,
+    },
+    {
+      id: 7,
+      key: 'extra',
+      icon: <EmojiEventsIcon sx={{ color: '#4F8CFF' }} />,
+    },
+  ];
 
   return (
     <RootBox>
@@ -42,36 +84,36 @@ export const HomeScreen = () => {
       <GridBox isNarrow={isNarrow}>
         <StyledPaper isNarrow={isNarrow} gridarea="character">
           <CardHeader gradient="character">
-            <Typography variant="h6" sx={{ color: '#fff', fontWeight: 700 }}>
+            <Typography sx={{ color: '#fff', fontSize: 18, fontWeight: 700, letterSpacing: 0.2 }}>
               {t('home.character')}
             </Typography>
           </CardHeader>
         </StyledPaper>
         <StyledPaper isNarrow={isNarrow} gridarea="quests">
           <CardHeader gradient="quests">
-            <Typography variant="h6" sx={{ color: '#fff', fontWeight: 700 }}>
+            <Typography sx={{ color: '#fff', fontSize: 18, fontWeight: 700, letterSpacing: 0.2 }}>
               {t('home.quests')}
             </Typography>
           </CardHeader>
         </StyledPaper>
         <StyledPaper isNarrow={isNarrow} gridarea="team">
           <CardHeader gradient="team">
-            <Typography variant="h6" sx={{ color: '#fff', fontWeight: 700 }}>
+            <Typography sx={{ color: '#fff', fontSize: 18, fontWeight: 700, letterSpacing: 0.2 }}>
               {t('home.team')}
             </Typography>
           </CardHeader>
         </StyledPaper>
         <StyledPaper isNarrow={isNarrow} gridarea="achievements" short>
           <CardHeader gradient="achievements">
-            <Typography variant="h6" sx={{ color: '#fff', fontWeight: 700 }}>
+            <Typography sx={{ color: '#fff', fontSize: 18, fontWeight: 700, letterSpacing: 0.2 }}>
               {t('home.achievements')}
             </Typography>
           </CardHeader>
-          {/* <RecentAchievements achievements={mockAchievements} /> */}
+          <RecentAchievements achievements={mockAchievements} />
         </StyledPaper>
         <StyledPaper isNarrow={isNarrow} gridarea="calendar" short>
           <CardHeader gradient="calendar">
-            <Typography variant="h6" sx={{ color: '#fff', fontWeight: 700 }}>
+            <Typography sx={{ color: '#fff', fontSize: 18, fontWeight: 700, letterSpacing: 0.2 }}>
               {t('home.activityCalendar')}
             </Typography>
           </CardHeader>
@@ -88,9 +130,9 @@ const RootBox = styled(Box)(({ theme }) => ({
 }));
 
 const WelcomeBox = styled(Box)(({ theme }) => ({
-  paddingTop: theme.spacing(3),
-  paddingLeft: theme.spacing(3),
-  paddingBottom: theme.spacing(2),
+  paddingTop: theme.spacing(1.5),
+  paddingLeft: theme.spacing(1.5),
+  paddingBottom: theme.spacing(1),
   paddingRight: 0,
   marginBottom: 0,
 }));
@@ -110,16 +152,14 @@ const GridBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'isNarrow',
 })<{ isNarrow: boolean }>(({ theme, isNarrow }) => ({
   width: '100%',
-  height: isNarrow ? 'auto' : 'calc(100vh - 120px)',
   display: isNarrow ? 'flex' : 'grid',
   flexDirection: isNarrow ? 'column' : undefined,
-  gap: theme.spacing(3),
+  gap: isNarrow ? 0 : theme.spacing(1.5),
   gridTemplateColumns: isNarrow ? undefined : 'repeat(6, 1fr)',
-  gridTemplateRows: isNarrow ? undefined : '1fr 1fr',
   gridAutoFlow: isNarrow ? undefined : 'row',
-  paddingTop: theme.spacing(3),
-  paddingLeft: theme.spacing(3),
-  paddingRight: theme.spacing(3),
+  paddingTop: theme.spacing(1.5),
+  paddingLeft: theme.spacing(1.5),
+  paddingRight: theme.spacing(1.5),
 }));
 
 const StyledPaper = styled(Paper, {
@@ -128,39 +168,49 @@ const StyledPaper = styled(Paper, {
   isNarrow: boolean;
   gridarea?: 'character' | 'quests' | 'team' | 'achievements' | 'calendar';
   short?: boolean;
-}>(({ theme, isNarrow, gridarea, short }) => ({
-  marginBottom: isNarrow ? theme.spacing(3) : 0,
-  height: isNarrow ? (short ? 220 : 320) : '100%',
-  borderRadius: 16,
-  background: theme.palette.background.paper,
-  boxShadow: theme.shadows[3],
-  display: 'flex',
-  flexDirection: 'column',
-  ...(gridarea && !isNarrow
-    ? gridarea === 'character'
-      ? { gridColumn: '1 / span 2', gridRow: '1' }
-      : gridarea === 'quests'
-      ? { gridColumn: '3 / span 2', gridRow: '1' }
-      : gridarea === 'team'
-      ? { gridColumn: '5 / span 2', gridRow: '1' }
-      : gridarea === 'achievements'
-      ? { gridColumn: '1 / span 3', gridRow: '2' }
-      : gridarea === 'calendar'
-      ? { gridColumn: '4 / span 3', gridRow: '2' }
-      : {}
-    : {}),
-}));
+}>(({ theme, isNarrow, gridarea, short }) => {
+  let gridStyles = {};
+  let minHeight = undefined;
+  if (!isNarrow && gridarea === 'achievements') {
+    gridStyles = { gridColumn: '1 / span 3', gridRow: '2' };
+  } else if (!isNarrow && gridarea === 'calendar') {
+    gridStyles = { gridColumn: '4 / span 3', gridRow: '2' };
+  } else if (!isNarrow && gridarea === 'character') {
+    gridStyles = { gridColumn: '1 / span 2', gridRow: '1' };
+    minHeight = 160;
+  } else if (!isNarrow && gridarea === 'quests') {
+    gridStyles = { gridColumn: '3 / span 2', gridRow: '1' };
+    minHeight = 160;
+  } else if (!isNarrow && gridarea === 'team') {
+    gridStyles = { gridColumn: '5 / span 2', gridRow: '1' };
+    minHeight = 160;
+  } else if (isNarrow) {
+    minHeight = short ? 110 : 160;
+  }
+  return {
+    marginBottom: isNarrow ? 12 : 0,
+    width: isNarrow ? '100%' : undefined,
+    minHeight,
+    borderRadius: 8,
+    background: theme.palette.background.paper,
+    boxShadow: theme.shadows[3],
+    display: 'flex',
+    flexDirection: 'column',
+    position: isNarrow ? 'static' : undefined,
+    ...gridStyles,
+  };
+});
 
 const CardHeader = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'gradient',
 })<{ gradient: 'character' | 'quests' | 'team' | 'achievements' | 'calendar' }>(
   ({ theme, gradient }) => ({
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
+    paddingLeft: theme.spacing(1.5),
+    paddingRight: theme.spacing(1.5),
+    paddingTop: theme.spacing(1.5),
+    paddingBottom: theme.spacing(1.5),
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
     background: (() => {
       switch (gradient) {
         case 'character':
