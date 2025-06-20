@@ -1,0 +1,59 @@
+{
+  "achievements": [
+    {
+      "id": 1,
+      "key": "first_commit",
+      "iconType": "code"
+    },
+    {
+      "id": 2,
+      "key": "first_bug",
+      "iconType": "bug"
+    },
+    {
+      "id": 3,
+      "key": "first_team",
+      "iconType": "groups"
+    },
+    {
+      "id": 4,
+      "key": "dark_theme",
+      "iconType": "dark"
+    },
+    {
+      "id": 5,
+      "key": "first_achievement",
+      "iconType": "trophy"
+    },
+    {
+      "id": 6,
+      "key": "first_lesson",
+      "iconType": "school"
+    }
+  ],
+  "user": {
+    "id": "1",
+    "username": "Максим Иванов",
+    "email": "maxim@example.com",
+    "avatar": "https://api.dicebear.com/9.x/avataaars/svg?seed=neutral-man&backgroundColor=e0e0e0&clothesColor=424242&skinColor=fdbcb4&topType=ShortHairShortFlat&facialHairType=Blank&clothingType=ShirtCrewNeck&mouthType=Serious&eyeType=Default&eyebrowType=Default",
+    "role": "Кодомаг",
+    "position": "Senior Frontend Developer",
+    "level": 12,
+    "xp": 750,
+    "xpMax": 1000,
+    "achievements": 14,
+    "reputation": 876,
+    "coins": 1200,
+    "skills": {
+      "strength": 42,
+      "intelligence": 86,
+      "agility": 63
+    },
+    "avatarOptions": [
+      "https://api.dicebear.com/9.x/avataaars/svg?seed=neutral-man&backgroundColor=e0e0e0&clothesColor=424242&skinColor=fdbcb4&topType=ShortHairShortFlat&facialHairType=Blank&clothingType=ShirtCrewNeck&mouthType=Serious&eyeType=Default&eyebrowType=Default",
+      "https://api.dicebear.com/9.x/avataaars/svg?seed=neutral-man2&backgroundColor=f5f5f5&clothesColor=616161&skinColor=fdbcb4&topType=ShortHairShortWaved&facialHairType=Blank&clothingType=CollarSweater&mouthType=Serious&eyeType=Default&eyebrowType=Default",
+      "https://api.dicebear.com/9.x/avataaars/svg?seed=neutral-man3&backgroundColor=eeeeee&clothesColor=757575&skinColor=fdbcb4&topType=ShortHairSides&facialHairType=Blank&clothingType=BlazerShirt&mouthType=Serious&eyeType=Default&eyebrowType=Default",
+      "https://api.dicebear.com/9.x/avataaars/svg?seed=neutral-man4&backgroundColor=f0f0f0&clothesColor=555555&skinColor=fdbcb4&topType=ShortHairShortCurly&facialHairType=Blank&clothingType=ShirtVNeck&mouthType=Serious&eyeType=Default&eyebrowType=Default"
+    ]
+  }
+} 
